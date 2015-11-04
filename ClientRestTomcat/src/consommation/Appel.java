@@ -44,10 +44,10 @@ public class Appel {
 		return uneChaine;
 	}
 
-	public String getClient(int parseInt) {
+	public String getClient(int id) {
 		String uneChaine;
 		WebTarget target = Consommateur.get().target;
-		target = target.path(GET_CLIENT);
+		target = target.path(GET_CLIENT + "/" + id);
 		// System.out.println(" uri :" + target.getUri());
 		uneChaine = target.request().accept(MediaType.APPLICATION_JSON).get(String.class);
 		return uneChaine;
