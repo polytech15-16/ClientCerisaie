@@ -1,24 +1,20 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
-
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>résultat</title>
+<title>Insert title here</title>
 </head>
 <body>
-
-<h1>
-	Voici le résulat de la requête <BR>
-	http://localhost:8080/ProjetRestFul/ressources/get
-
-</h1>
-
-<P>Chaîne affichée : ${reponse}</P>
-
-
+	<H1>Application Cliente Rest Ful</H1>
+	<BR>
+	<BR>
+	<div id="menu">
+		<ul>
+			<li><a href="user/1">Afficher l'utilisateur 1</a></li>
+			<li><a href="user">Afficher la liste des clients</a></li>
+		</ul>
+	</div>
 </body>
 </html>

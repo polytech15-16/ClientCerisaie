@@ -4,39 +4,49 @@ import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.MediaType;
 
 public class Appel {
-	
-	public  String  appelTextPlain()
-	{
+
+	public String appelTextPlain() {
 		String uneChaine;
-		
 		WebTarget target = Consommateur.get().target;
 		target = target.path("hello/christian");
-		System.out.println(" uri :"  + target.getUri());
-		uneChaine= target.request().accept(MediaType.TEXT_PLAIN).get(String.class);
+		System.out.println(" uri :" + target.getUri());
+		uneChaine = target.request().accept(MediaType.TEXT_PLAIN).get(String.class);
 		return uneChaine;
 	}
-	
-	
-	public  String  appelXml()
-	{
+
+	public String appelXml() {
 		String uneChaine;
-		
 		WebTarget target = Consommateur.get().target;
 		target = target.path("get");
-		//System.out.println(" uri :"  + target.getUri());
-		uneChaine= target.request().accept(MediaType.APPLICATION_XML).get(String.class);
+		// System.out.println(" uri :" + target.getUri());
+		uneChaine = target.request().accept(MediaType.APPLICATION_XML).get(String.class);
 		return uneChaine;
 	}
-	
-	
-	public  String  appelJson()
-	{
+
+	public String appelJson() {
 		String uneChaine;
-		
 		WebTarget target = Consommateur.get().target;
 		target = target.path("getjson");
-		//System.out.println(" uri :"  + target.getUri());
-		uneChaine= target.request().accept(MediaType.APPLICATION_JSON).get(String.class);
+		// System.out.println(" uri :" + target.getUri());
+		uneChaine = target.request().accept(MediaType.APPLICATION_JSON).get(String.class);
+		return uneChaine;
+	}
+
+	public String getClients() {
+		String uneChaine;
+		WebTarget target = Consommateur.get().target;
+		target = target.path("getClientsList");
+		// System.out.println(" uri :" + target.getUri());
+		uneChaine = target.request().accept(MediaType.APPLICATION_JSON).get(String.class);
+		return uneChaine;
+	}
+
+	public String getClient(int parseInt) {
+		String uneChaine;
+		WebTarget target = Consommateur.get().target;
+		target = target.path("getClient");
+		// System.out.println(" uri :" + target.getUri());
+		uneChaine = target.request().accept(MediaType.APPLICATION_JSON).get(String.class);
 		return uneChaine;
 	}
 }
