@@ -5,6 +5,9 @@ import javax.ws.rs.core.MediaType;
 
 public class Appel {
 
+	private static final String GET_CLIENTS_LIST = "getClientsList";
+	private static final String GET_CLIENT = "getClient";
+
 	public String appelTextPlain() {
 		String uneChaine;
 		WebTarget target = Consommateur.get().target;
@@ -35,7 +38,7 @@ public class Appel {
 	public String getClients() {
 		String uneChaine;
 		WebTarget target = Consommateur.get().target;
-		target = target.path("getClientsList");
+		target = target.path(GET_CLIENTS_LIST);
 		// System.out.println(" uri :" + target.getUri());
 		uneChaine = target.request().accept(MediaType.APPLICATION_JSON).get(String.class);
 		return uneChaine;
@@ -44,7 +47,7 @@ public class Appel {
 	public String getClient(int parseInt) {
 		String uneChaine;
 		WebTarget target = Consommateur.get().target;
-		target = target.path("getClient");
+		target = target.path(GET_CLIENT);
 		// System.out.println(" uri :" + target.getUri());
 		uneChaine = target.request().accept(MediaType.APPLICATION_JSON).get(String.class);
 		return uneChaine;

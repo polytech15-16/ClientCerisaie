@@ -39,9 +39,7 @@ public class Controleur extends MultiActionController {
 		model.setViewName("users/show_user");
 		try {
 			Appel unAppel = new Appel();
-			// TODO faire la fct dans le serveur
-			// String reponse = unAppel.getClient(Integer.parseInt(id));
-			String reponse = unAppel.appelJson();
+			String reponse = unAppel.getClient(Integer.parseInt(id));
 
 			model.addObject("reponse", reponse);
 		} catch (Exception e) {
@@ -60,10 +58,7 @@ public class Controleur extends MultiActionController {
 		String reponse;
 		try {
 			Appel unAppel = new Appel();
-
-			reponse = unAppel.appelJson();
-
-			// reponse = unAppel.getClients();
+			reponse = unAppel.getClients();
 			model.addObject("reponse", reponse);
 		} catch (Exception e) {
 			request.setAttribute("erreur", e.getMessage());
