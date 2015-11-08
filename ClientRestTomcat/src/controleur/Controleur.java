@@ -41,7 +41,7 @@ public class Controleur extends MultiActionController {
 			Appel unAppel = new Appel();
 			String reponse = unAppel.getClient(Integer.parseInt(id));
 
-			model.addObject("reponse", reponse);
+			model.addObject("user", reponse);
 		} catch (Exception e) {
 			model.addObject("erreur", e.getMessage());
 			model.setViewName("erreur");
@@ -59,7 +59,7 @@ public class Controleur extends MultiActionController {
 		try {
 			Appel unAppel = new Appel();
 			reponse = unAppel.getClients();
-			model.addObject("reponse", reponse);
+			model.addObject("users", reponse);
 		} catch (Exception e) {
 			request.setAttribute("erreur", e.getMessage());
 			RequestDispatcher disp = getServletContext().getRequestDispatcher("/erreur.jsp");
