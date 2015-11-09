@@ -11,6 +11,14 @@
   					<p>Numéro : {{numCli}}</p>
   					<p>Adresse : {{adrRueCli}} {{cpCli}} {{villeCli}}</p>
 					<p>Pièce du client : {{pieceCli}}|{{numPieceCli}}</p>
+					<p>
+						<a href="user/{{numCli}}"><button class="ui inverted blue button">Afficher</button></a>
+						<a href="user/{{numCli}}/edit"><button class="ui inverted green button">Modifier</button></a>
+						<form method="post" action="user/delete">
+							<input type="hidden" name="numCli" value="{{numCli}}">
+							<input class="ui inverted red button" type="submit" value="Supprimer">
+						</form>				
+					</p>
 				</div>
 			{{/each}}
 	</div>
@@ -25,5 +33,6 @@
 		$("#content-placeholder").html(template(context));
 	});
 </script>
+
 
 <%@include file="../footer.jsp"%>

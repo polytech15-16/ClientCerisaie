@@ -1,3 +1,12 @@
 .main.container {
-    margin-top: 7em;
+	margin-top: 7em;
+}
+
+.notification {
+	top: 40px;
+}
+
+.ui.message .list:not(.ui) li:before {
+    position: absolute;
+    content: '';
 }

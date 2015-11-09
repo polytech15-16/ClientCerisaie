@@ -1,12 +1,24 @@
 package consommation;
 
+import java.io.IOException;
+
+import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+
+import org.codehaus.jackson.JsonGenerationException;
+import org.codehaus.jackson.map.JsonMappingException;
+import org.codehaus.jackson.map.ObjectMapper;
+
+import metier.Client;
 
 public class Appel {
 
 	private static final String GET_CLIENTS_LIST = "getClientsList";
 	private static final String GET_CLIENT = "getClient";
+	private static final String SAVE_CLIENT = "saveClient";
+	private static final String DELETE_CLIENT = "deleteClient";
 
 	public String appelTextPlain() {
 		String uneChaine;
@@ -51,5 +63,25 @@ public class Appel {
 		// System.out.println(" uri :" + target.getUri());
 		uneChaine = target.request().accept(MediaType.APPLICATION_JSON).get(String.class);
 		return uneChaine;
+	}
+
+	public String saveClient(Client client) throws JsonGenerationException, JsonMappingException, IOException {
+		Response uneChaine;
+		WebTarget target = Consommateur.get().target;
+		target = target.path(SAVE_CLIENT);
+
+		System.out.println(client.toString());
+		ObjectMapper mapper = new ObjectMapper();
+		String clientString = mapper.writeValueAsString(client);
+
+		return target.request().accept(MediaType.APPLICATION_JSON)
+				.post(Entity.entity(clientString, MediaType.APPLICATION_JSON), String.class);
+	}
+
+	public String deleteClient(int id) {
+		WebTarget target = Consommateur.get().target;
+		target = target.path(DELETE_CLIENT);
+		return target.request().accept(MediaType.APPLICATION_JSON)
+				.post(Entity.entity(String.valueOf(id), MediaType.APPLICATION_JSON), String.class);
 	}
 }
