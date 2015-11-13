@@ -49,7 +49,7 @@ public class Controleur extends MultiActionController {
 		try {
 			Appel unAppel = new Appel();
 			String reponse = unAppel.getClient(Integer.parseInt(id));
-
+			System.out.println(reponse);
 			model.addObject("user", reponse);
 		} catch (Exception e) {
 			model.addObject("erreur", e.getMessage());
@@ -101,6 +101,7 @@ public class Controleur extends MultiActionController {
 		Appel unAppel = new Appel();
 		String reponse = unAppel.deleteClient(Integer.parseInt(numCli));
 		model.setViewName("users/delete_user");
+		model.addObject("result", reponse);
 		return model.addObject("url", request.getContextPath());
 	}
 

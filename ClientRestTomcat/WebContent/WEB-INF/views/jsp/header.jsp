@@ -18,6 +18,9 @@
 <script src="${url}/resources/js/semantic.js"></script>
 <script src="${url}/resources/js/script.js"></script>
 <script src="${url}/resources/js/handlebars-v4.0.4.js"></script>
+<script src="${url}/resources/js/moment.js"></script>
+<script src="${url}/resources/js/helper.js"></script>
+
 
 </head>
 <body>
