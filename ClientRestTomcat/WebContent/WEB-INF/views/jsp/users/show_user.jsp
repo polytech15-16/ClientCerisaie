@@ -39,12 +39,46 @@
 						</div>
 						<div class="description">
 							<h4>Listes des activités</h4>
+							{{#if activites}}
 							<ul>
 								{{#activites}}
 									<li><a href="">Numéro : {{idActivite}} <p><i class="calendar icon"></i>{{formatDate dateJour "long"}}</p></a></li> 
 								{{/activites}}
 							</ul>
-						</div>
+							{{else}}
+								Il n'y a pas d'activité.
+							{{/if}}
+
+							<h4>Emplacement :</h4>
+							{{#if emplacement}}
+							<ul>
+								<li>Numéro : {{emplacement.numEmpl}}</li>
+								<li>Nombre de personnes max : {{emplacement.nbPersMaxEmpl}}</li>
+								<li>Surface : {{emplacement.surfaceEmpl}}</li>
+								<li>Type d'emplacement : {{emplacement.typeEmplacement.codeTypeE}} - {{emplacement.typeEmplacement.libtypepl}}</li>
+								<li>Prix : {{emplacement.typeEmplacement.tariftypepl}}<i class="eur icon"></i></li>
+							</ul>
+							{{else}}
+								Il n'y a pas d'emplacement.
+							{{/if}}
+							<a href="../sejour/{{numSej}}">
+							<div class="ui animated button left floated">
+   							   <div class="visible content">Afficher</div>
+      							<div class="hidden content">
+      							  <i class="file outline icon"></i>
+     							</div>
+    						   </div>
+							</div>
+							</a>
+							<a href="../sejour/{{numSej}}?output=pdf">
+							<div class="ui animated button right floated">
+   							   <div class="visible content">Facture</div>
+      							<div class="hidden content">
+      							  <i class="file pdf outline icon"></i>
+     							</div>
+    						   </div>
+							</div>
+							</a>
 					</div>
 				</div>
 				{{/each}}

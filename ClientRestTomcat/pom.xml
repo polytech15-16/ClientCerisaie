@@ -33,6 +33,13 @@
 			<version>3.0.2.Final</version>
 		</dependency>
 
+		<!-- Pdf library -->
+		<dependency>
+			<groupId>com.lowagie</groupId>
+			<artifactId>itext</artifactId>
+			<version>2.1.7</version>
+		</dependency>
+
 	</dependencies>
 	<build>
 		<sourceDirectory>src</sourceDirectory>
