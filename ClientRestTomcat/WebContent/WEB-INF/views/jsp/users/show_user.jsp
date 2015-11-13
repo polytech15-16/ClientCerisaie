@@ -27,6 +27,7 @@
 		</div>
 		<div class="column">
 			<h1>Liste des séjours :</h1>
+			{{#if sejours}}
 			<div class="ui cards">
 				{{#each sejours}}
 				<div class="card">
@@ -48,6 +49,13 @@
 				</div>
 				{{/each}}
 			</div>
+		{{else}}
+			<div class="card">
+				<div class="content">
+					<h3>Ce client n'a pas de séjours.</h3>
+				</div>
+			</div>
+		{{/if}}
 		</div>
 	</div>
 	</script>
