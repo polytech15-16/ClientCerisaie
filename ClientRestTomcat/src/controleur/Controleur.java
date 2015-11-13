@@ -100,7 +100,7 @@ public class Controleur extends MultiActionController {
 		String numCli = request.getParameter("numCli");
 		Appel unAppel = new Appel();
 		String reponse = unAppel.deleteClient(Integer.parseInt(numCli));
-
+		model.setViewName("users/delete_user");
 		return model.addObject("url", request.getContextPath());
 	}
 

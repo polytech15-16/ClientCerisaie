@@ -70,7 +70,6 @@ public class Appel {
 		WebTarget target = Consommateur.get().target;
 		target = target.path(SAVE_CLIENT);
 
-		System.out.println(client.toString());
 		ObjectMapper mapper = new ObjectMapper();
 		String clientString = mapper.writeValueAsString(client);
 
