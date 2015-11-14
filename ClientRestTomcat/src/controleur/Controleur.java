@@ -11,6 +11,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.ServletRequestBindingException;
+import org.springframework.web.bind.ServletRequestUtils;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -19,6 +21,7 @@ import org.springframework.web.servlet.mvc.multiaction.MultiActionController;
 
 import consommation.Appel;
 import metier.Client;
+import metier.Sejour;
 
 /**
  * Servlet implementation class Home
@@ -49,11 +52,50 @@ public class Controleur extends MultiActionController {
 		try {
 			Appel unAppel = new Appel();
 			String reponse = unAppel.getClient(Integer.parseInt(id));
-
+			System.out.println(reponse);
 			model.addObject("user", reponse);
 		} catch (Exception e) {
 			model.addObject("erreur", e.getMessage());
 			model.setViewName("erreur");
+		}
+		return model;
+	}
+
+	// Affiche les informations d'un séjour
+	@RequestMapping(value = "/sejour/{id:.+}", method = RequestMethod.GET)
+	public ModelAndView showSejour(@PathVariable("id") String id, HttpServletRequest request,
+			HttpServletResponse response) throws ServletRequestBindingException {
+		String sejour = null;
+		Sejour s = null;
+		String output = ServletRequestUtils.getStringParameter(request, "output");
+		ModelAndView model = new ModelAndView();
+		model.addObject("title", "Informations séjour");
+		model.addObject("url", request.getContextPath());
+
+		try {
+			Appel unAppel = new Appel();
+			sejour = unAppel.getSejour(Integer.parseInt(id));
+			// Parse le json
+			ObjectMapper mapper = new ObjectMapper();
+			s = mapper.readValue(sejour, Sejour.class);
+		} catch (Exception e) {
+			model.addObject("erreur", e.getMessage());
+			model.setViewName("erreur");
+			e.printStackTrace();
+		}
+
+		if (output == null || "".equals(output)) {
+			// return normal view
+			model.addObject("sejour", sejour);
+			model.setViewName("sejour/show_sejour");
+		} else if ("PDF".equals(output.toUpperCase())) {
+			// return pdf view
+			model.addObject("sejour", s);
+			model.setViewName("PdfFactureSejour");
+		} else {
+			// return normal view
+			model.addObject("sejour", sejour);
+			model.setViewName("sejour/show_sejour");
 		}
 		return model;
 	}
@@ -101,6 +143,7 @@ public class Controleur extends MultiActionController {
 		Appel unAppel = new Appel();
 		String reponse = unAppel.deleteClient(Integer.parseInt(numCli));
 		model.setViewName("users/delete_user");
+		model.addObject("result", reponse);
 		return model.addObject("url", request.getContextPath());
 	}
 

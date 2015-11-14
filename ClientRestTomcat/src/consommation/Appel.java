@@ -19,6 +19,7 @@ public class Appel {
 	private static final String GET_CLIENT = "getClient";
 	private static final String SAVE_CLIENT = "saveClient";
 	private static final String DELETE_CLIENT = "deleteClient";
+	private static final String GET_SEJOUR = "getSejour";
 
 	public String appelTextPlain() {
 		String uneChaine;
@@ -82,5 +83,12 @@ public class Appel {
 		target = target.path(DELETE_CLIENT);
 		return target.request().accept(MediaType.APPLICATION_JSON)
 				.post(Entity.entity(String.valueOf(id), MediaType.APPLICATION_JSON), String.class);
+	}
+
+	public String getSejour(int id) {
+		WebTarget target = Consommateur.get().target;
+		target = target.path(GET_SEJOUR + "/" + id);
+		// System.out.println(" uri :" + target.getUri());
+		return target.request().accept(MediaType.APPLICATION_JSON).get(String.class);
 	}
 }
