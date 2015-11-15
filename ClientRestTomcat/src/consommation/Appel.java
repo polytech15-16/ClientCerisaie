@@ -20,6 +20,7 @@ public class Appel {
 	private static final String SAVE_CLIENT = "saveClient";
 	private static final String DELETE_CLIENT = "deleteClient";
 	private static final String GET_SEJOUR = "getSejour";
+	private static final String GET_SEJOURS_OF_CLIENT = "getSejoursOfClient";
 
 	public String appelTextPlain() {
 		String uneChaine;
@@ -88,7 +89,12 @@ public class Appel {
 	public String getSejour(int id) {
 		WebTarget target = Consommateur.get().target;
 		target = target.path(GET_SEJOUR + "/" + id);
-		// System.out.println(" uri :" + target.getUri());
+		return target.request().accept(MediaType.APPLICATION_JSON).get(String.class);
+	}
+
+	public String getSejoursOfClient(int id) {
+		WebTarget target = Consommateur.get().target;
+		target = target.path(GET_SEJOURS_OF_CLIENT + "/" + id);
 		return target.request().accept(MediaType.APPLICATION_JSON).get(String.class);
 	}
 }

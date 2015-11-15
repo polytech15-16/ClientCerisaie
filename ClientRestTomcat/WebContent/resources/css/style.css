@@ -10,3 +10,7 @@
     position: absolute;
     content: '';
 }
+
+.space{
+	margin-top:10px;
+}

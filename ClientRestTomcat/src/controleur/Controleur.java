@@ -50,10 +50,13 @@ public class Controleur extends MultiActionController {
 		model.addObject("url", request.getContextPath());
 
 		try {
+			int idClient = Integer.parseInt(id);
 			Appel unAppel = new Appel();
-			String reponse = unAppel.getClient(Integer.parseInt(id));
-			System.out.println(reponse);
+			String reponse = unAppel.getClient(idClient);
 			model.addObject("user", reponse);
+			reponse = "";
+			reponse = unAppel.getSejoursOfClient(idClient);
+			model.addObject("sejours", reponse);
 		} catch (Exception e) {
 			model.addObject("erreur", e.getMessage());
 			model.setViewName("erreur");
