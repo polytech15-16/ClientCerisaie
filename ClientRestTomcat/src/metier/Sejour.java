@@ -1,9 +1,7 @@
 package metier;
 // Generated 5 nov. 2015 15:21:55 by Hibernate Tools 4.3.1
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
