@@ -44,9 +44,17 @@
 					{{else}} 
 						Il n'y a pas d'emplacement. 
 					{{/if}}
-					<a href="../sejour/{{numSej}}?output=pdf">
+					<a href="../sejour/{{numSej}}?type=activite&output=pdf">
 					<div class="ui animated button right floated">
-						<div class="visible content">Facture</div>
+						<div class="visible content">Facture Activités</div>
+						<div class="hidden content">
+							<i class="file pdf outline icon"></i>
+						</div>
+					</div>
+					</a>
+<a href="../sejour/{{numSej}}?type=sejour&output=pdf">
+					<div class="ui animated button right floated">
+						<div class="visible content">Facture Séjour</div>
 						<div class="hidden content">
 							<i class="file pdf outline icon"></i>
 						</div>

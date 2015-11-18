@@ -20,9 +20,10 @@ import com.lowagie.text.pdf.PdfPCell;
 import com.lowagie.text.pdf.PdfPTable;
 import com.lowagie.text.pdf.PdfWriter;
 
+import metier.Activite;
 import metier.Sejour;
 
-public class PdfFactureSejourView extends AbstractPdfView {
+public class PdfFactureActiviteView extends AbstractPdfView {
 
 	final long DAY_IN_MILLIS = 1000 * 60 * 60 * 24;
 
@@ -55,13 +56,13 @@ public class PdfFactureSejourView extends AbstractPdfView {
 		document.add(table);
 
 		// ajout du titre
-		Paragraph title = new Paragraph(new Phrase("Facturation d'un séjour", h1));
+		Paragraph title = new Paragraph(new Phrase("Facturation des activités", h1));
 		title.setAlignment(Element.ALIGN_CENTER);
 		title.setSpacingBefore(10);
 		document.add(title);
 
 		Paragraph num = new Paragraph(new Phrase(
-				"Numéro de facture :" + sejour.getClient().getNumCli() + sejour.getClient().getNumPieceCli(), h3));
+				"Numéro de facture :" + sejour.getClient().getNumCli() + sejour.getNumSej(), h3));
 		num.setAlignment(Element.ALIGN_LEFT);
 		num.setSpacingBefore(40);
 		num.setSpacingAfter(0);
@@ -73,24 +74,28 @@ public class PdfFactureSejourView extends AbstractPdfView {
 		date.setAlignment(Element.ALIGN_RIGHT);
 		date.setSpacingBefore(0);
 		document.add(date);
-
+		
 		// Création des info séjour
-		PdfPTable sejourInfos = new PdfPTable(2);
-		sejourInfos.setSpacingBefore(40);
-		sejourInfos.setHorizontalAlignment(Element.ALIGN_LEFT);
-		cell = new PdfPCell(new Phrase("Numéro de séjour : ", h));
-		sejourInfos.addCell(cell);
-		cell.setPhrase(new Phrase(String.valueOf(sejour.getNumSej()), h));
-		sejourInfos.addCell(cell);
-		cell.setPhrase(new Phrase("Numéro d’emplacement : ", h));
-		sejourInfos.addCell(cell);
-		cell.setPhrase(new Phrase(String.valueOf(sejour.getEmplacement().getNumEmpl()), h));
-		sejourInfos.addCell(cell);
-		cell.setPhrase(new Phrase("Type d’emplacement :", h));
-		sejourInfos.addCell(cell);
-		cell.setPhrase(new Phrase(sejour.getEmplacement().getTypeEmplacement().getLibtypepl(), h));
-		sejourInfos.addCell(cell);
-		document.add(sejourInfos);
+				PdfPTable sejourInfos = new PdfPTable(2);
+				sejourInfos.setSpacingBefore(40);
+				sejourInfos.setHorizontalAlignment(Element.ALIGN_LEFT);
+				cell = new PdfPCell(new Phrase("Numéro de séjour : ", h));
+				sejourInfos.addCell(cell);
+				cell.setPhrase(new Phrase(String.valueOf(sejour.getNumSej()), h));
+				sejourInfos.addCell(cell);
+				cell.setPhrase(new Phrase("Numéro d’emplacement : ", h));
+				sejourInfos.addCell(cell);
+				cell.setPhrase(new Phrase(String.valueOf(sejour.getEmplacement().getNumEmpl()), h));
+				sejourInfos.addCell(cell);
+				cell.setPhrase(new Phrase("Type d’emplacement :", h));
+				sejourInfos.addCell(cell);
+				cell.setPhrase(new Phrase(sejour.getEmplacement().getTypeEmplacement().getLibtypepl(), h));
+				sejourInfos.addCell(cell);
+				cell.setPhrase(new Phrase("Nombre de personnes :", h));
+				sejourInfos.addCell(cell);
+				cell.setPhrase(new Phrase(String.valueOf(sejour.getNbPersonnes()), h));
+				sejourInfos.addCell(cell);
+				document.add(sejourInfos);
 
 		// Client
 		Paragraph client = new Paragraph(new Phrase("Client :", h3));
@@ -108,36 +113,39 @@ public class PdfFactureSejourView extends AbstractPdfView {
 		client.setIndentationLeft(350);
 		document.add(client);
 
-		// Séjours
-		Paragraph sejourA = new Paragraph(new Phrase("** Séjour **", h2));
-		sejourA.setSpacingBefore(50);
-		document.add(sejourA);
-		PdfPTable sejourAI = new PdfPTable(4);
-		sejourAI.setSpacingBefore(40);
-		sejourAI.setHorizontalAlignment(Element.ALIGN_MIDDLE);
-		cell = new PdfPCell(new Phrase("Date de début", h));
-		sejourAI.addCell(cell);
-		cell.setPhrase(new Phrase("Date de fin", h));
-		sejourAI.addCell(cell);
-		cell.setPhrase(new Phrase("Nbre de personnes", h));
-		sejourAI.addCell(cell);
-		cell.setPhrase(new Phrase("Prix/jour/personne", h));
-		sejourAI.addCell(cell);
-
-		cell.setPhrase(new Phrase(dateFormat.format(sejour.getDateDebSej()), h));
-		sejourAI.addCell(cell);
-		cell.setPhrase(new Phrase(dateFormat.format(sejour.getDateFinSej()), h));
-		sejourAI.addCell(cell);
-		cell.setPhrase(new Phrase(sejour.getNbPersonnes().toString(), h));
-		sejourAI.addCell(cell);
-		cell.setPhrase(new Phrase(String.valueOf(sejour.getEmplacement().getTypeEmplacement().getTariftypepl()), h));
-		sejourAI.addCell(cell);
-
-		document.add(sejourAI);
-
-		int diffInDays = (int) ((sejour.getDateFinSej().getTime() - sejour.getDateDebSej().getTime()) / DAY_IN_MILLIS);
-		float prixTotal = diffInDays * sejour.getEmplacement().getTypeEmplacement().getTariftypepl()
-				* sejour.getNbPersonnes();
+		// Activites
+				Paragraph activiteA = new Paragraph(new Phrase("** Activités **", h2));
+				activiteA.setSpacingBefore(50);
+				document.add(activiteA);
+				PdfPTable activitesAI = new PdfPTable(4);
+				activitesAI.setSpacingBefore(40);
+				activitesAI.setHorizontalAlignment(Element.ALIGN_MIDDLE);
+				cell = new PdfPCell(new Phrase("Libelle Activite", h));
+				activitesAI.addCell(cell);
+				cell.setPhrase(new Phrase("Date", h));
+				activitesAI.addCell(cell);
+				cell.setPhrase(new Phrase("Durée", h));
+				activitesAI.addCell(cell);
+				cell.setPhrase(new Phrase("Tarif Unitaire", h));
+				activitesAI.addCell(cell);
+				
+				for (Activite a : sejour.getActivites()){
+					cell.setPhrase(new Phrase(a.getSport().getLibelleSport(), h));
+					activitesAI.addCell(cell);
+					cell.setPhrase(new Phrase(dateFormat.format(a.getDateJour()), h));
+					activitesAI.addCell(cell);
+					cell.setPhrase(new Phrase(a.getSport().getUniteTpsSport(), h));
+					activitesAI.addCell(cell);
+					cell.setPhrase(new Phrase(String.valueOf(a.getSport().getTarifUnite()), h));
+					activitesAI.addCell(cell);
+				}
+				
+				document.add(activitesAI);
+				
+		float prixTotal = 0;
+		for (Activite a : sejour.getActivites()){
+			prixTotal += (a.getSport().getTarifUnite() * sejour.getNbPersonnes());
+		}
 		Paragraph prix = new Paragraph(new Phrase("Prix total : " + prixTotal + " €", h3));
 		prix.setIndentationLeft(300);
 		prix.setSpacingBefore(40);

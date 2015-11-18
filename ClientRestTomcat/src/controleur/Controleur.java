@@ -75,6 +75,7 @@ public class Controleur extends MultiActionController {
 		String sejour = null;
 		Sejour s = null;
 		String output = ServletRequestUtils.getStringParameter(request, "output");
+		String type = ServletRequestUtils.getStringParameter(request, "type");
 		ModelAndView model = new ModelAndView();
 		model.addObject("title", "Informations séjour");
 		model.addObject("url", request.getContextPath());
@@ -83,6 +84,7 @@ public class Controleur extends MultiActionController {
 			Appel unAppel = new Appel();
 			sejour = unAppel.getSejour(Integer.parseInt(id));
 			// Parse le json
+			sejour = sejour.replace("{\"activites\":{", "{\"activites\":[{");
 			ObjectMapper mapper = new ObjectMapper();
 			s = mapper.readValue(sejour, Sejour.class);
 		} catch (Exception e) {
@@ -98,7 +100,11 @@ public class Controleur extends MultiActionController {
 		} else if ("PDF".equals(output.toUpperCase())) {
 			// return pdf view
 			model.addObject("sejour", s);
-			model.setViewName("PdfFactureSejour");
+			if ("sejour".equals(type)) {
+				model.setViewName("PdfFactureSejour");
+			} else if ("activite".equals(type)) {
+				model.setViewName("PdfFactureActivite");
+			}
 		} else {
 			// return normal view
 			model.addObject("sejour", sejour);
