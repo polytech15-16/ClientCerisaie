@@ -1,6 +1,9 @@
 package controleur;
 
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -21,6 +24,7 @@ import org.springframework.web.servlet.mvc.multiaction.MultiActionController;
 
 import consommation.Appel;
 import metier.Client;
+import metier.Emplacement;
 import metier.Sejour;
 
 /**
@@ -50,10 +54,13 @@ public class Controleur extends MultiActionController {
 		model.addObject("url", request.getContextPath());
 
 		try {
+			int idClient = Integer.parseInt(id);
 			Appel unAppel = new Appel();
-			String reponse = unAppel.getClient(Integer.parseInt(id));
-			System.out.println(reponse);
+			String reponse = unAppel.getClient(idClient);
 			model.addObject("user", reponse);
+			reponse = "";
+			reponse = unAppel.getSejoursOfClient(idClient);
+			model.addObject("sejours", reponse);
 		} catch (Exception e) {
 			model.addObject("erreur", e.getMessage());
 			model.setViewName("erreur");
@@ -243,61 +250,178 @@ public class Controleur extends MultiActionController {
 		return model;
 	}
 
-	/**
-	 * Méthode pour afficher la liste dans un tableau
-	 * 
-	 * @param request
-	 * @param response
-	 * @throws ServletException
-	 * @throws IOException
-	 */
-	protected void show(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	@RequestMapping(value = "/sejour", method = RequestMethod.GET)
+	public ModelAndView listSejours(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		ModelAndView model = new ModelAndView();
+		model.setViewName("sejour/list_sejours");
+		model.addObject("title", "Informations séjours");
+		model.addObject("url", request.getContextPath());
 		String reponse;
 		try {
 			Appel unAppel = new Appel();
-			reponse = unAppel.appelTextPlain();
-			request.setAttribute("reponse", reponse);
-			RequestDispatcher disp = getServletContext().getRequestDispatcher("/afficheGetParametre.jsp");
-			disp.forward(request, response);
+			reponse = unAppel.getSejours();
+			model.addObject("sejours", reponse);
 		} catch (Exception e) {
 			request.setAttribute("erreur", e.getMessage());
 			RequestDispatcher disp = getServletContext().getRequestDispatcher("/erreur.jsp");
 			disp.forward(request, response);
+		}
+		return model;
+	}
+
+	// Ajouter un séjour
+	@RequestMapping(value = "/sejour/add", method = RequestMethod.GET)
+	public ModelAndView addSejour(HttpServletRequest request, HttpServletResponse response) {
+		ModelAndView model = new ModelAndView();
+		model.setViewName("sejour/add_sejour");
+
+		// Envoi les clients et emplacement possibles
+		Appel unAppel = new Appel();
+
+		addClientsAndEmplacements(model, unAppel);
+
+		model.addObject("title", "Ajouter un séjour");
+		model.addObject("url", request.getContextPath());
+		return model;
+	}
+
+	@RequestMapping(value = "/sejour/{id:.+}/edit", method = RequestMethod.GET)
+	public ModelAndView editSejour(@PathVariable("id") String id, HttpServletRequest request,
+			HttpServletResponse response) {
+		ModelAndView model = new ModelAndView();
+		model.setViewName("sejour/edit_sejour");
+
+		Appel unAppel = new Appel();
+		String reponse = unAppel.getSejour(Integer.parseInt(id));
+
+		addClientsAndEmplacements(model, unAppel);
+
+		ObjectMapper mapper = new ObjectMapper();
+		try {
+			Sejour s = mapper.readValue(reponse, Sejour.class);
+			model.addObject("sejour", s);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		model.addObject("title", "Editer un séjour");
+		model.addObject("url", request.getContextPath());
+		return model;
+	}
+
+	private void addClientsAndEmplacements(ModelAndView model, Appel unAppel) {
+		String clients = unAppel.getClients();
+		String emplacements = unAppel.getEmplacements();
+		model.addObject("clients", clients);
+		model.addObject("emplacements", emplacements);
+	}
+
+	// Save utilisateur
+	@RequestMapping(value = "/sejour/save", method = RequestMethod.POST)
+	public ModelAndView saveSejour(HttpServletRequest request, HttpServletResponse response) {
+		ModelAndView model = new ModelAndView();
+		model.addObject("url", request.getContextPath());
+		Appel unAppel = new Appel();
+
+		Sejour s = new Sejour();
+		Map<String, String> erreur = verifySejour(request, s);
+		System.out.println(s.toString());
+
+		// On a des erreurs on n'enregistre pas le sejour
+		if (erreur.size() > 0) {
+			model.addObject("erreur", erreur);
+			model.addObject("sejour", s);
+			addClientsAndEmplacements(model, unAppel);
+
+			// Si le séjour a un numéro --> modification
+			if (s.getNumSej() != null) {
+				model.setViewName("sejour/edit_sejour");
+			} else {
+				model.setViewName("sejour/add_sejour");
+			}
+			return model;
+		} else {// On enregistre l'utilisateur
+			try {
+				String reponse = unAppel.saveSejour(s);
+				model.addObject("notification", reponse);
+				model.setViewName("index");
+				return model;
+			} catch (IOException e) {
+				model.addObject("notification", e.getMessage());
+				return model;
+			}
 		}
 	}
 
-	protected void showXML(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-		String reponse;
-		try {
-
-			Appel unAppel = new Appel();
-			reponse = unAppel.appelXml();
-			request.setAttribute("reponse", reponse);
-			RequestDispatcher disp = getServletContext().getRequestDispatcher("/afficheXml.jsp");
-			disp.forward(request, response);
-
-		} catch (Exception e) {
-			request.setAttribute("erreur", e.getMessage());
-			RequestDispatcher disp = getServletContext().getRequestDispatcher("/erreur.jsp");
-			disp.forward(request, response);
-		}
+	// Delete sejour
+	@RequestMapping(value = "/sejour/delete", method = RequestMethod.POST)
+	public ModelAndView deleteSejour(HttpServletRequest request, HttpServletResponse response) {
+		ModelAndView model = new ModelAndView();
+		String numSejour = request.getParameter("numSej");
+		Appel unAppel = new Appel();
+		String reponse = unAppel.deleteSejour(Integer.parseInt(numSejour));
+		model.setViewName("sejour/delete_sejour");
+		model.addObject("result", reponse);
+		return model.addObject("url", request.getContextPath());
 	}
 
-	protected void showJson(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-		String reponse;
-		try {
-			Appel unAppel = new Appel();
-			reponse = unAppel.appelJson();
-			request.setAttribute("reponse", reponse);
-			RequestDispatcher disp = getServletContext().getRequestDispatcher("/afficheJson.jsp");
-			disp.forward(request, response);
-		} catch (Exception e) {
-			request.setAttribute("erreur", e.getMessage());
-			RequestDispatcher disp = getServletContext().getRequestDispatcher("/erreur.jsp");
-			disp.forward(request, response);
+	private Map<String, String> verifySejour(HttpServletRequest request, Sejour s) {
+		Map<String, String> erreur = new HashMap<String, String>();
+		String numSej = request.getParameter("numSej");
+		if (numSej != null) {
+			s.setNumSej(Integer.parseInt(numSej));
 		}
+
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+
+		Date dateDebSej = null;
+		String dateDeb = request.getParameter("dateDebSej");
+		try {
+			dateDebSej = sdf.parse(dateDeb);
+		} catch (ParseException e) {
+			erreur.put("dateDebSej", "La date de début n'est pas valide.");
+		}
+		s.setDateDebSej(dateDebSej);
+
+		Date dateFinSej = null;
+		String dateFin = request.getParameter("dateFinSej");
+		try {
+			dateFinSej = sdf.parse(dateFin);
+		} catch (ParseException e) {
+			erreur.put("dateFinSej", "La date de fin n'est pas valide.");
+		}
+		s.setDateFinSej(dateFinSej);
+
+		if (dateDebSej != null && dateFinSej != null && dateDebSej.after(dateFinSej)) {
+			erreur.put("dateDebSej", "La date de début est après la date de fin.");
+		}
+
+		try {
+			int nbPersonnes = Integer.parseInt(request.getParameter("nbPersonnes"));
+			s.setNbPersonnes(nbPersonnes);
+		} catch (NumberFormatException e) {
+			erreur.put("nbPersonnes", "Le nombre de personnes n'est pas correct");
+		}
+
+		try {
+			int client = Integer.parseInt(request.getParameter("client"));
+			Client c = new Client();
+			c.setNumCli(client);
+			s.setClient(c);
+		} catch (NumberFormatException e) {
+			erreur.put("client", "Le numéro du client n'est pas correct.");
+		}
+
+		try {
+			int emplacement = Integer.parseInt(request.getParameter("emplacement"));
+			Emplacement e = new Emplacement();
+			e.setNumEmpl(emplacement);
+			s.setEmplacement(e);
+		} catch (NumberFormatException e) {
+			erreur.put("emplacement", "Le numéro de l'emplacement n'est pas correct.");
+		}
+		return erreur;
 	}
 
 }

@@ -11,16 +11,21 @@
 <link rel="stylesheet" type="text/css"
 	href="${url}/resources/css/semantic.css">
 <link rel="stylesheet" type="text/css"
+	href="${url}/resources/css/jquery-ui.min.css">
+<link rel="stylesheet" type="text/css"
 	href="${url}/resources/css/style.css">
+	
 
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+	<script src="${url}/resources/js/jquery-ui.min.js"></script>
 <script src="${url}/resources/js/semantic.js"></script>
 <script src="${url}/resources/js/script.js"></script>
 <script src="${url}/resources/js/handlebars-v4.0.4.js"></script>
 <script src="${url}/resources/js/moment.js"></script>
 <script src="${url}/resources/js/helper.js"></script>
 
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 </head>
 <body>
@@ -36,8 +41,17 @@
 						les utilisateurs</a>
 					<div class="divider"></div>
 					<a class="item" href="${url}/user/add"><i class="user icon"></i>Ajouter
-						un utilisateur</a> <a class="item" href="${url}/user/1"><i
-						class="user icon"></i>Afficher l'utilisateur 1</a>
+						un utilisateur</a>
+				</div>
+			</div>
+			<div class="ui simple dropdown item">
+				Séjour <i class="dropdown icon"></i>
+				<div class="menu">
+					<a class="item" href="${url}/sejour"><i class="gamepad icon"></i>Afficher
+						les séjours</a>
+					<div class="divider"></div>
+					<a class="item" href="${url}/sejour/add"><i class="user icon"></i>Ajouter
+						un séjour</a>
 				</div>
 			</div>
 		</div>

@@ -12,6 +12,7 @@ import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
 
 import metier.Client;
+import metier.Sejour;
 
 public class Appel {
 
@@ -20,6 +21,11 @@ public class Appel {
 	private static final String SAVE_CLIENT = "saveClient";
 	private static final String DELETE_CLIENT = "deleteClient";
 	private static final String GET_SEJOUR = "getSejour";
+	private static final String GET_SEJOURS_LIST = "getSejoursList";
+	private static final String GET_SEJOURS_OF_CLIENT = "getSejoursOfClient";
+	private static final String GET_EMPLACEMENTS_LIST = "getEmplacementsList";
+	private static final String SAVE_SEJOUR = "saveSejour";
+	private static final String DELETE_SEJOUR = "deleteSejour";
 
 	public String appelTextPlain() {
 		String uneChaine;
@@ -57,6 +63,15 @@ public class Appel {
 		return uneChaine;
 	}
 
+	public String getSejours() {
+		String uneChaine;
+		WebTarget target = Consommateur.get().target;
+		target = target.path(GET_SEJOURS_LIST);
+		// System.out.println(" uri :" + target.getUri());
+		uneChaine = target.request().accept(MediaType.APPLICATION_JSON).get(String.class);
+		return uneChaine;
+	}
+
 	public String getClient(int id) {
 		String uneChaine;
 		WebTarget target = Consommateur.get().target;
@@ -88,7 +103,35 @@ public class Appel {
 	public String getSejour(int id) {
 		WebTarget target = Consommateur.get().target;
 		target = target.path(GET_SEJOUR + "/" + id);
-		// System.out.println(" uri :" + target.getUri());
 		return target.request().accept(MediaType.APPLICATION_JSON).get(String.class);
+	}
+
+	public String getSejoursOfClient(int id) {
+		WebTarget target = Consommateur.get().target;
+		target = target.path(GET_SEJOURS_OF_CLIENT + "/" + id);
+		return target.request().accept(MediaType.APPLICATION_JSON).get(String.class);
+	}
+
+	public String getEmplacements() {
+		WebTarget target = Consommateur.get().target;
+		target = target.path(GET_EMPLACEMENTS_LIST);
+		return target.request().accept(MediaType.APPLICATION_JSON).get(String.class);
+	}
+
+	public String saveSejour(Sejour s) throws JsonGenerationException, JsonMappingException, IOException {
+		WebTarget target = Consommateur.get().target;
+		target = target.path(SAVE_SEJOUR);
+		ObjectMapper mapper = new ObjectMapper();
+		String sejourString = mapper.writeValueAsString(s);
+
+		return target.request().accept(MediaType.APPLICATION_JSON)
+				.post(Entity.entity(sejourString, MediaType.APPLICATION_JSON), String.class);
+	}
+
+	public String deleteSejour(int id) {
+		WebTarget target = Consommateur.get().target;
+		target = target.path(DELETE_SEJOUR);
+		return target.request().accept(MediaType.APPLICATION_JSON)
+				.post(Entity.entity(String.valueOf(id), MediaType.APPLICATION_JSON), String.class);
 	}
 }

@@ -24,9 +24,7 @@
 					<ul>
 						{{#activites}}
 						<li><a href="">Numéro : {{idActivite}}
-								<p>
-									<i class="calendar icon"></i>{{formatDate dateJour "long"}}
-								</p>
+								<p><i class="soccer icon"></i> {{sport.libelleSport}} <i class="paypal icon"></i> {{sport.tarifUnite}}<i class="euro icon"></i> <i class="calendar icon"></i>{{formatDate dateJour "long"}} Durée : {{sport.uniteTpsSport}}</p>
 						</a></li> {{/activites}}
 					</ul>
 					{{else}} Il n'y a pas d'activité. {{/if}}

@@ -1,13 +1,9 @@
 package metier;
 // Generated 5 nov. 2015 15:21:55 by Hibernate Tools 4.3.1
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 import javax.xml.bind.annotation.XmlRootElement;
-
-import org.codehaus.jackson.annotate.JsonIgnore;
 
 @XmlRootElement(name = "Sejour")
 public class Sejour implements java.io.Serializable {
@@ -18,7 +14,7 @@ public class Sejour implements java.io.Serializable {
 	private Date dateDebSej;
 	private Date dateFinSej;
 	private Integer nbPersonnes;
-	private List<Activite> activites = new ArrayList<Activite>();
+	private Activite activites;
 
 	public Sejour() {
 
@@ -30,7 +26,7 @@ public class Sejour implements java.io.Serializable {
 	}
 
 	public Sejour(Client client, Emplacement emplacement, Date dateDebSej, Date dateFinSej, Integer nbPersonnes,
-			List<Activite> activites) {
+			Activite activites) {
 		this.client = client;
 		this.emplacement = emplacement;
 		this.dateDebSej = dateDebSej;
@@ -94,12 +90,11 @@ public class Sejour implements java.io.Serializable {
 		this.nbPersonnes = nbPersonnes;
 	}
 
-	@JsonIgnore
-	public List<Activite> getActivites() {
+	public Activite getActivites() {
 		return this.activites;
 	}
 
-	public void setActivites(List<Activite> activites) {
+	public void setActivites(Activite activites) {
 		this.activites = activites;
 	}
 
