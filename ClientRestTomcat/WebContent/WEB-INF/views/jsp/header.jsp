@@ -6,6 +6,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+
 <title>${title}</title>
 
 <link rel="stylesheet" type="text/css"
@@ -24,6 +25,9 @@
 <script src="${url}/resources/js/handlebars-v4.0.4.js"></script>
 <script src="${url}/resources/js/moment.js"></script>
 <script src="${url}/resources/js/helper.js"></script>
+
+<link rel="shortcut icon" href="${url}/resources/images/favicon.ico" type="image/x-icon">
+<link rel="icon" href="${url}/resources/images/favicon.ico" type="image/x-icon">
 
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
