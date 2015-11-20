@@ -36,7 +36,7 @@
 	<div class="ui fixed inverted menu">
 		<div class="ui container">
 			<a href="${url}" class="header item"> <img class="logo"
-				src="${url}/resources/images/logo.png"> Camping paradise
+				src="${url}/resources/images/logo2.png">&nbsp;&nbsp;&nbsp;Camping paradise
 			</a> <a href="${url}" class="item">Accueil</a>
 			<div class="ui simple dropdown item">
 				Utilisateur <i class="dropdown icon"></i>
