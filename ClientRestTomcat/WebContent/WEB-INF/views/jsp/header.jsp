@@ -37,11 +37,11 @@
 		<div class="ui container">
 			<a href="${url}" class="header item"> <img class="logo"
 				src="${url}/resources/images/logo2.png">&nbsp;&nbsp;&nbsp;Camping paradise
-			</a> <a href="${url}" class="item">Accueil</a>
+			</a> <a href="${url}" class="item"><i class="home icon"></i>Accueil</a>
 			<div class="ui simple dropdown item">
 				Utilisateur <i class="dropdown icon"></i>
 				<div class="menu">
-					<a class="item" href="${url}/user"><i class="gamepad icon"></i>Afficher
+					<a class="item" href="${url}/user"><i class="sort content ascending icon"></i>Afficher
 						les utilisateurs</a>
 					<div class="divider"></div>
 					<a class="item" href="${url}/user/add"><i class="user icon"></i>Ajouter
@@ -51,10 +51,10 @@
 			<div class="ui simple dropdown item">
 				Séjour <i class="dropdown icon"></i>
 				<div class="menu">
-					<a class="item" href="${url}/sejour"><i class="gamepad icon"></i>Afficher
+					<a class="item" href="${url}/sejour"><i class="sort content ascending icon"></i>Afficher
 						les séjours</a>
 					<div class="divider"></div>
-					<a class="item" href="${url}/sejour/add"><i class="user icon"></i>Ajouter
+					<a class="item" href="${url}/sejour/add"><i class="tree icon"></i>Ajouter
 						un séjour</a>
 				</div>
 			</div>
