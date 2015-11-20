@@ -44,6 +44,8 @@
 					{{else}} 
 						Il n'y a pas d'emplacement. 
 					{{/if}}
+
+{{#if activites}}
 					<a href="../sejour/{{numSej}}?type=activite&output=pdf">
 					<div class="ui animated button right floated">
 						<div class="visible content">Facture Activités</div>
@@ -52,6 +54,7 @@
 						</div>
 					</div>
 					</a>
+{{/if}}
 <a href="../sejour/{{numSej}}?type=sejour&output=pdf">
 					<div class="ui animated button right floated">
 						<div class="visible content">Facture Séjour</div>

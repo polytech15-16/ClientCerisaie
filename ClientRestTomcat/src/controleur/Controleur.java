@@ -83,8 +83,11 @@ public class Controleur extends MultiActionController {
 		try {
 			Appel unAppel = new Appel();
 			sejour = unAppel.getSejour(Integer.parseInt(id));
+			String tmp = sejour;
+			
 			// Parse le json
 			sejour = sejour.replace("{\"activites\":{", "{\"activites\":[{");
+			sejour = sejour.replace("}},\"client\":", "}}],\"client\":");
 			ObjectMapper mapper = new ObjectMapper();
 			s = mapper.readValue(sejour, Sejour.class);
 		} catch (Exception e) {

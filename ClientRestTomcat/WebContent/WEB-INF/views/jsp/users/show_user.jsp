@@ -85,14 +85,14 @@
 					</a>
 
 				</div>
-				<a href="../sejour/{{numSej}}?output=pdf">
+				<!--<a href="../sejour/{{numSej}}?output=pdf">
 					<div class="ui animated button right floated">
 						<div class="visible content">Facture</div>
 						<div class="hidden content">
 							<i class="file pdf outline icon"></i>
 						</div>
 					</div>
-				</a>
+				</a>-->
 			</div>
 		</div>
 		{{/Sejour}} 
