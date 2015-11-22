@@ -138,7 +138,6 @@ public class Controleur extends MultiActionController {
 		ObjectMapper mapper = new ObjectMapper();
 		try {
 			Client c = mapper.readValue(reponse, Client.class);
-			System.out.println(c.toString());
 			model.addObject("client", c);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -335,7 +334,6 @@ public class Controleur extends MultiActionController {
 
 		Sejour s = new Sejour();
 		Map<String, String> erreur = verifySejour(request, s);
-		System.out.println(s.toString());
 
 		// On a des erreurs on n'enregistre pas le sejour
 		if (erreur.size() > 0) {
